@@ -35,17 +35,11 @@ $SUDO lb config \
   --binary-images iso-hybrid \
   --debian-installer none \
   --archive-areas "main contrib non-free non-free-firmware" \
-  --mirror-bootstrap http://deb.debian.org/debian \
-  --mirror-chroot http://deb.debian.org/debian \
-  --mirror-binary http://deb.debian.org/debian \
+  --security false \
   --bootappend-live "boot=live components username=legit hostname=legitos locales=en_US.UTF-8 keyboard-layouts=us" \
   --iso-application "LegitOS Live" \
   --iso-publisher "LegitAfri Technologies" \
   --iso-volume "LEGITOS_LIVE"
-
-# Force removal of potentially invalid trixie-security entries, to prevent 404 from interrupting the build
-echo "Patching chroot sources.list to remove invalid security entries..."
-$SUDO sed -i '/security.debian.org/d' config/chroot/etc/apt/sources.list 2>/dev/null || true
 
 echo "[3/4] Building LegitOS ISO..."
 
