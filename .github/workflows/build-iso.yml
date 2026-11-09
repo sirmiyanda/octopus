@@ -1,4 +1,3 @@
-
 name: Build LegitOS ISO
 
 on:
@@ -14,24 +13,37 @@ jobs:
   build:
     runs-on: ubuntu-24.04
     timeout-minutes: 240
+    container:
+      image: debian:trixie
+      options: "--privileged"
 
     steps:
       - name: Get LegitOS source code
         uses: actions/checkout@v4
+
+      - name: Install build tools
+        run: |
+          apt-get update
+          apt-get install -y \
+            live-build \
+            debootstrap \
+            debian-archive-keyring \
+            squashfs-tools \
+            xorriso \
+            grub-pc-bin \
+            grub-efi-amd64-bin \
+            mtools \
+            dosfstools
 
       - name: Build LegitOS
         run: |
           chmod +x build.sh
           ./build.sh
 
-      - name: Prepare ISO download
-        run: |
-          cp ../LegitOS.iso "$GITHUB_WORKSPACE/LegitOS.iso"
-          ls -lh "$GITHUB_WORKSPACE/LegitOS.iso"
-
       - name: Upload ISO
         uses: actions/upload-artifact@v4
         with:
           name: LegitOS-ISO
-          path: LegitOS.iso
+          path: '*.iso'
+          if-no-files-found: error
           retention-days: 7
