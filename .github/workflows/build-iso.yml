@@ -1,0 +1,37 @@
+
+name: Build LegitOS ISO
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 240
+
+    steps:
+      - name: Get LegitOS source code
+        uses: actions/checkout@v4
+
+      - name: Build LegitOS
+        run: |
+          chmod +x build.sh
+          ./build.sh
+
+      - name: Prepare ISO download
+        run: |
+          cp ../LegitOS.iso "$GITHUB_WORKSPACE/LegitOS.iso"
+          ls -lh "$GITHUB_WORKSPACE/LegitOS.iso"
+
+      - name: Upload ISO
+        uses: actions/upload-artifact@v4
+        with:
+          name: LegitOS-ISO
+          path: LegitOS.iso
+          retention-days: 7
