@@ -31,7 +31,6 @@ echo "[2/4] Configuring LegitOS..."
 lb clean --purge || true
 
 $SUDO lb config \
-  --mode debian \
   --distribution trixie \
   --architectures amd64 \
   --binary-images iso-hybrid \
@@ -39,9 +38,8 @@ $SUDO lb config \
   --archive-areas "main contrib non-free non-free-firmware" \
   --mirror-bootstrap http://deb.debian.org/debian \
   --mirror-chroot http://deb.debian.org/debian \
-  --mirror-chroot-security http://security.debian.org/debian-security \
   --mirror-binary http://deb.debian.org/debian \
-  --mirror-binary-security http://security.debian.org/debian-security \
+  --parent-mirror-security https://security.debian.org/debian-security/ \
   --bootappend-live "boot=live components username=legit hostname=legitos locales=en_US.UTF-8 keyboard-layouts=us" \
   --iso-application "LegitOS Live" \
   --iso-publisher "LegitAfri Technologies" \
