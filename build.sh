@@ -1,4 +1,3 @@
-
 #!/usr/bin/env bash
 set -euo pipefail
 
@@ -39,12 +38,14 @@ $SUDO lb config \
   --mirror-bootstrap http://deb.debian.org/debian \
   --mirror-chroot http://deb.debian.org/debian \
   --mirror-binary http://deb.debian.org/debian \
-  --mirror-chroot-security http://security.debian.org/debian-security \
-  --mirror-binary-security http://security.debian.org/debian-security \
   --bootappend-live "boot=live components username=legit hostname=legitos locales=en_US.UTF-8 keyboard-layouts=us" \
   --iso-application "LegitOS Live" \
   --iso-publisher "LegitAfri Technologies" \
   --iso-volume "LEGITOS_LIVE"
+
+# Force removal of potentially invalid trixie-security entries, to prevent 404 from interrupting the build
+echo "Patching chroot sources.list to remove invalid security entries..."
+$SUDO sed -i '/security.debian.org/d' config/chroot/etc/apt/sources.list 2>/dev/null || true
 
 echo "[3/4] Building LegitOS ISO..."
 
