@@ -39,7 +39,8 @@ $SUDO lb config \
   --mirror-bootstrap http://deb.debian.org/debian \
   --mirror-chroot http://deb.debian.org/debian \
   --mirror-binary http://deb.debian.org/debian \
-  --parent-mirror-security https://security.debian.org/debian-security/ \
+  --mirror-chroot-security http://security.debian.org/debian-security \
+  --mirror-binary-security http://security.debian.org/debian-security \
   --bootappend-live "boot=live components username=legit hostname=legitos locales=en_US.UTF-8 keyboard-layouts=us" \
   --iso-application "LegitOS Live" \
   --iso-publisher "LegitAfri Technologies" \
